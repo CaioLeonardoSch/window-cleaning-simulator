@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Cleaning Simulator</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Window Cleaning Simulator</h1>
+      <div id="stats">
+        <div class="bar">
+          <span>Limpeza</span>
+          <div class="track"><i id="bar-clean"></i></div>
+          <b id="val-clean">0%</b>
+        </div>
+        <div class="bar">
+          <span>Res&iacute;duo</span>
+          <div class="track residue"><i id="bar-residue"></i></div>
+          <b id="val-residue">0%</b>
+        </div>
+        <div id="timer">0.0s</div>
+      </div>
+    </header>
+
+    <div class="stage">
+      <canvas id="game" width="960" height="600"></canvas>
+      <div id="banner" class="hidden">
+        <strong>Janela limpa!</strong>
+        <span id="banner-time"></span>
+        <em>R para recome&ccedil;ar</em>
+      </div>
+    </div>
+
+    <div id="toolbar">
+      <button class="tool" data-tool="spray"><b>1</b> Borrifador</button>
+      <button class="tool" data-tool="sponge"><b>2</b> Esponja</button>
+      <button class="tool" data-tool="squeegee"><b>3</b> Rodo</button>
+      <button id="reset"><b>R</b> Reiniciar</button>
+    </div>
+
+    <p id="hint">Segure o bot&atilde;o do mouse sobre o vidro para usar a ferramenta.</p>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/character.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

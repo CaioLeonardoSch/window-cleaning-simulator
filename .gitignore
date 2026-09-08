@@ -1,0 +1,7 @@
+# Config local do Claude Code — é da máquina, não do projeto
+.claude/
+
+# Lixo de SO e editor
+Thumbs.db
+.DS_Store
+.vscode/
