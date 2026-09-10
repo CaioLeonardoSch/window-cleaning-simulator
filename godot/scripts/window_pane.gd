@@ -101,3 +101,11 @@ func _confirm_clean() -> void:
 ## Rede de segurança da seção 8 — chamar ao voltar de pausa/resize/foreground.
 func repaint_from_cpu() -> void:
 	painter.repaint_from_cpu(sim)
+
+## Reinicia a sujeira (tecla `reset`). sim.reset() sozinho não bastava: a máscara GPU
+## (grime_painter) só acumula estamparia subtrativa, então sem repintar ela o vidro
+## continuava aparecendo limpo mesmo com a grade CPU de volta suja.
+func reset_window() -> void:
+	sim.reset()
+	_confirmed_clean = false
+	painter.repaint_from_cpu(sim)

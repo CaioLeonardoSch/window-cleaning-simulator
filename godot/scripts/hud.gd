@@ -21,6 +21,11 @@ func _ready() -> void:
 	if not players.is_empty():
 		player = players[0]
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("reset"):
+		_finished = false
+		banner.visible = false
+
 func _process(_delta: float) -> void:
 	if player != null:
 		tool_label.text = "Ferramenta: %s" % player.TOOL_NAMES[player.active_tool_index]

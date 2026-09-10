@@ -49,7 +49,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("tool_3"):
 		_set_active_tool(2)
 	elif event.is_action_pressed("reset") and active_window != null:
-		active_window.sim.reset()
+		active_window.reset_window()
 	elif event.is_action_pressed("pause"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 
