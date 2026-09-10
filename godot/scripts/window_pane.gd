@@ -3,8 +3,7 @@ extends StaticBody3D
 ## manda no jogo, a GPU (GrimePainter/shader) manda na aparência. Seção 3 do plano.
 
 const GLASS_LAYER_BIT := 2  # camada de física "glass" (bit 2)
-const WIN_GRIME := 0.04
-const WIN_RESIDUE := 0.05
+const WIN_CLEAN := 0.999  # completude só conta 100% limpo — sem meio-termo na v0
 
 @export var glass_size: Vector2 = Vector2(1.6, 1.2)
 
@@ -67,7 +66,7 @@ func _process(delta: float) -> void:
 
 	if not _confirmed_clean:
 		var st := sim.stats()
-		if st.grime < WIN_GRIME and st.residue < WIN_RESIDUE:
+		if st.clean >= WIN_CLEAN:
 			_confirm_clean()
 
 ## Converte um ponto global (do raycast) pra UV 0..1 do vidro (pseudocódigo da seção 6.2).

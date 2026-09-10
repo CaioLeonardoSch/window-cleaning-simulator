@@ -5,6 +5,14 @@ const MOUSE_SENS := 0.0022
 const PITCH_LIMIT := 1.2217  # ~70°
 const AIM_DISTANCE := 3.0
 const GLASS_LAYER := 2  # tem que bater com window_pane.gd: GLASS_LAYER_BIT
+const EYE_HEIGHT := 1.65
+
+# Limites do andaime (scaffold.tscn: plataforma 3.00x0.80m, guarda-corpo em z=1.15).
+# Sem CharacterBody3D/colisão própria — só clamp na posição, é o suficiente pra não
+# atravessar o vidro (z baixo) nem o corrimão (z alto) nem cair pelas pontas (x).
+const PLATFORM_X_RANGE := Vector2(-1.2, 1.2)
+const PLATFORM_Z_RANGE := Vector2(0.45, 1.0)
+const MOVE_SPEED := 1.3
 
 @onready var camera_rig: Node3D = $CameraRig
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -43,6 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
 
 func _process(delta: float) -> void:
+	_move(delta)
 	_sway_viewmodel(delta)
 	_sway_scaffold(delta)
 
@@ -70,6 +79,25 @@ func _process(delta: float) -> void:
 	}
 	active_window.apply_tool(tools[active_tool_index], stroke)
 	_prev_uv = uv
+
+## Anda pela plataforma do andaime (WASD), em eixo do mundo — nada de física ainda, só clamp
+## nos limites da plataforma. Sem movimento vertical (plano: fora de escopo da v0).
+func _move(delta: float) -> void:
+	var dir := Vector2.ZERO
+	if Input.is_action_pressed("move_forward"):
+		dir.y -= 1.0
+	if Input.is_action_pressed("move_back"):
+		dir.y += 1.0
+	if Input.is_action_pressed("move_left"):
+		dir.x -= 1.0
+	if Input.is_action_pressed("move_right"):
+		dir.x += 1.0
+	if dir == Vector2.ZERO:
+		return
+	dir = dir.normalized() * MOVE_SPEED * delta
+	position.x = clampf(position.x + dir.x, PLATFORM_X_RANGE.x, PLATFORM_X_RANGE.y)
+	position.z = clampf(position.z + dir.y, PLATFORM_Z_RANGE.x, PLATFORM_Z_RANGE.y)
+	position.y = EYE_HEIGHT
 
 ## Raycast do centro da tela (seção 6.2 do plano) — a mira é sempre o centro, não o mouse.
 func _aim() -> Dictionary:
