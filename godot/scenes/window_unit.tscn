@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/window_unit.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/window_pane.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/grime_painter.gd" id="3"]
+[ext_resource type="Shader" path="res://shaders/glass.gdshader" id="4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_glass"]
+size = Vector3(1.6, 1.2, 0.02)
+
+[sub_resource type="QuadMesh" id="QuadMesh_glass"]
+size = Vector2(1.6, 1.2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glass"]
+shader = ExtResource("4")
+shader_parameter/grime_color = Color(0.36, 0.32, 0.22, 1)
+shader_parameter/clean_tint = Color(0.82, 0.9, 0.96, 1)
+shader_parameter/base_alpha = 0.08
+
+[node name="WindowUnit" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Glass" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+script = ExtResource("2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Glass"]
+shape = SubResource("BoxShape3D_glass")
+
+[node name="GlassMesh" type="MeshInstance3D" parent="Glass"]
+mesh = SubResource("QuadMesh_glass")
+surface_material_override/0 = SubResource("ShaderMaterial_glass")
+
+[node name="SubViewport" type="SubViewport" parent="Glass"]
+transparent_bg = true
+size = Vector2i(1024, 768)
+
+[node name="InitialNoise" type="TextureRect" parent="Glass/SubViewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="GrimePainter" type="Node2D" parent="Glass/SubViewport"]
+script = ExtResource("3")

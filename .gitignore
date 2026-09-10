@@ -5,3 +5,8 @@
 Thumbs.db
 .DS_Store
 .vscode/
+
+# Godot
+godot/.godot/
+godot/export/
+*.tmp

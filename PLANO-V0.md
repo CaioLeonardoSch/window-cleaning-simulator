@@ -1,5 +1,9 @@
 # Plano v0 — uma janela, primeira pessoa
 
+> **Substituído.** O jogo vai ser feito em Godot, para Steam — o roteiro ativo é
+> `PLANO-V0-GODOT.md`. Este documento fica como referência do protótipo web, que
+> continua valendo como especificação de *como a limpeza tem que se comportar*.
+
 Instruções para transformar a base atual (`Window Cleaning Simulator`) na primeira versão
 jogável do jogo do prédio comercial: **uma única janela**, vista em primeira pessoa, de fora
 do prédio, em cima de um andaime, com cenário mínimo.

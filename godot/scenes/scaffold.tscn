@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(3.0, 0.06, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(3.0, 0.06, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="Mat_platform"]
+albedo_color = Color(0.35, 0.32, 0.28, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail"]
+size = Vector3(3.0, 0.05, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="Mat_metal"]
+albedo_color = Color(0.65, 0.66, 0.68, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_post"]
+size = Vector3(0.05, 1.05, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bucket"]
+size = Vector3(0.25, 0.3, 0.25)
+
+[node name="Scaffold" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, 0.75)
+shape = SubResource("BoxShape3D_platform")
+
+[node name="Platform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, 0.75)
+mesh = SubResource("BoxMesh_platform")
+surface_material_override/0 = SubResource("Mat_platform")
+
+[node name="RailTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 1.15)
+mesh = SubResource("BoxMesh_rail")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="RailPostLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 0.525, 1.15)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="RailPostRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 0.525, 1.15)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="Bucket" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.15, 0.6)
+mesh = SubResource("BoxMesh_bucket")
+surface_material_override/0 = SubResource("Mat_metal")
