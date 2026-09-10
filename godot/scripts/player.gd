@@ -14,6 +14,8 @@ const PLATFORM_X_RANGE := Vector2(-1.2, 1.2)
 const PLATFORM_Z_RANGE := Vector2(0.45, 1.0)
 const MOVE_SPEED := 1.3
 
+const TOOL_NAMES := ["Borrifador (1)", "Esponja (2)", "Rodo (3)"]
+
 @onready var camera_rig: Node3D = $CameraRig
 @onready var camera: Camera3D = $CameraRig/Camera3D
 @onready var viewmodel: Node3D = $CameraRig/Camera3D/Viewmodel
@@ -27,6 +29,7 @@ var _last_look := Vector2.ZERO
 var _sway_time := 0.0
 
 func _ready() -> void:
+	add_to_group("player")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	tools = [ToolSpray.new(), ToolSponge.new(), ToolSqueegee.new()]
 	var panes := get_tree().get_nodes_in_group("window_pane")
@@ -80,23 +83,30 @@ func _process(delta: float) -> void:
 	active_window.apply_tool(tools[active_tool_index], stroke)
 	_prev_uv = uv
 
-## Anda pela plataforma do andaime (WASD), em eixo do mundo — nada de física ainda, só clamp
-## nos limites da plataforma. Sem movimento vertical (plano: fora de escopo da v0).
+## Anda pela plataforma do andaime (WASD), relativo pra onde a câmera olha (yaw) — W sempre
+## "pra frente da tela", não um eixo fixo do mundo. Nada de física ainda, só clamp nos limites
+## da plataforma. Sem movimento vertical (plano: fora de escopo da v0).
 func _move(delta: float) -> void:
-	var dir := Vector2.ZERO
+	var input := Vector2.ZERO
 	if Input.is_action_pressed("move_forward"):
-		dir.y -= 1.0
+		input.y += 1.0
 	if Input.is_action_pressed("move_back"):
-		dir.y += 1.0
+		input.y -= 1.0
 	if Input.is_action_pressed("move_left"):
-		dir.x -= 1.0
+		input.x -= 1.0
 	if Input.is_action_pressed("move_right"):
-		dir.x += 1.0
-	if dir == Vector2.ZERO:
+		input.x += 1.0
+	if input == Vector2.ZERO:
 		return
-	dir = dir.normalized() * MOVE_SPEED * delta
-	position.x = clampf(position.x + dir.x, PLATFORM_X_RANGE.x, PLATFORM_X_RANGE.y)
-	position.z = clampf(position.z + dir.y, PLATFORM_Z_RANGE.x, PLATFORM_Z_RANGE.y)
+	input = input.normalized()
+
+	var basis := camera_rig.global_transform.basis
+	var forward: Vector3 = Vector3(-basis.z.x, 0.0, -basis.z.z).normalized()
+	var right: Vector3 = Vector3(basis.x.x, 0.0, basis.x.z).normalized()
+	var move: Vector3 = (forward * input.y + right * input.x) * MOVE_SPEED * delta
+
+	position.x = clampf(position.x + move.x, PLATFORM_X_RANGE.x, PLATFORM_X_RANGE.y)
+	position.z = clampf(position.z + move.z, PLATFORM_Z_RANGE.x, PLATFORM_Z_RANGE.y)
 	position.y = EYE_HEIGHT
 
 ## Raycast do centro da tela (seção 6.2 do plano) — a mira é sempre o centro, não o mouse.

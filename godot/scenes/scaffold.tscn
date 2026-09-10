@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [sub_resource type="BoxMesh" id="BoxMesh_platform"]
 size = Vector3(3.0, 0.06, 0.8)
@@ -18,8 +18,13 @@ albedo_color = Color(0.65, 0.66, 0.68, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_post"]
 size = Vector3(0.05, 1.05, 0.05)
 
-[sub_resource type="BoxMesh" id="BoxMesh_bucket"]
-size = Vector3(0.25, 0.3, 0.25)
+[sub_resource type="CylinderMesh" id="CylinderMesh_bucket"]
+top_radius = 0.16
+bottom_radius = 0.13
+height = 0.28
+
+[sub_resource type="StandardMaterial3D" id="Mat_bucket"]
+albedo_color = Color(0.78, 0.32, 0.14, 1)
 
 [node name="Scaffold" type="StaticBody3D"]
 
@@ -48,6 +53,6 @@ mesh = SubResource("BoxMesh_post")
 surface_material_override/0 = SubResource("Mat_metal")
 
 [node name="Bucket" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.15, 0.6)
-mesh = SubResource("BoxMesh_bucket")
-surface_material_override/0 = SubResource("Mat_metal")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.14, 0.6)
+mesh = SubResource("CylinderMesh_bucket")
+surface_material_override/0 = SubResource("Mat_bucket")

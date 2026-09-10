@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1"]
 
@@ -18,6 +18,12 @@ size = Vector3(0.09, 0.16, 0.09)
 
 [sub_resource type="StandardMaterial3D" id="Mat_spray"]
 albedo_color = Color(0.18, 0.5, 0.72, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_spray_nozzle"]
+size = Vector3(0.03, 0.03, 0.11)
+
+[sub_resource type="StandardMaterial3D" id="Mat_spray_nozzle"]
+albedo_color = Color(0.22, 0.24, 0.26, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sponge"]
 size = Vector3(0.14, 0.07, 0.1)
@@ -45,10 +51,17 @@ far = 100.0
 [node name="Viewmodel" type="Node3D" parent="CameraRig/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, -0.16, -0.35)
 
-[node name="ToolSpray" type="MeshInstance3D" parent="CameraRig/Camera3D/Viewmodel"]
+[node name="ToolSpray" type="Node3D" parent="CameraRig/Camera3D/Viewmodel"]
 visible = false
+
+[node name="Body" type="MeshInstance3D" parent="CameraRig/Camera3D/Viewmodel/ToolSpray"]
 mesh = SubResource("BoxMesh_spray")
 surface_material_override/0 = SubResource("Mat_spray")
+
+[node name="Nozzle" type="MeshInstance3D" parent="CameraRig/Camera3D/Viewmodel/ToolSpray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, -0.07)
+mesh = SubResource("BoxMesh_spray_nozzle")
+surface_material_override/0 = SubResource("Mat_spray_nozzle")
 
 [node name="ToolSponge" type="MeshInstance3D" parent="CameraRig/Camera3D/Viewmodel"]
 visible = false
